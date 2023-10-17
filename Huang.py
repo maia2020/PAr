@@ -42,7 +42,7 @@ Ftilta = Ftilta(utilda)
 plt.plot(utilda, Ftilta)
 plt.xlabel("utilda")
 plt.ylabel("Ftilta")
-plt.title("Figure 3")
+plt.title("Ftilta en fonction de utilda")
 plt.show()
 
 # Alors on va différencier Ftilta pour trouver la raideur
@@ -85,4 +85,24 @@ plt.plot(utilda, raideur)
 plt.xlabel("utilda")
 plt.ylabel("raideur")
 plt.title("Raideur en fonction de utilda")
+plt.show()
+
+# ------------------------------------------------------- Transmissibilité----------------------------------------------------------------
+
+# Pour un isolateur lineaire
+
+omega = np.linspace(0.1, 10, 1000)
+sigma = 0.01
+Tlin = np.zeros(len(omega))
+
+for i in range(len(omega)):
+    Tlin[i] = np.sqrt(
+        (1 + 4 * (sigma**2) * (omega[i] ** 2))
+        / ((1 - omega[i] ** 2) ** 2 + 4 * omega[i] ** 2 * (sigma**2))
+    )
+
+plt.plot(omega, Tlin)
+plt.xlabel("omega")
+plt.ylabel("Transmissibilite")
+plt.title("Transmissibilite pour un isolateur lineaire")
 plt.show()
