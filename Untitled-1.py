@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 # caractéristiques de la poutre
 
 E=69e9      #Module de Young
-E=(1+0.01j)*69e9      #Module de Young
 rho=2710     #masse volumique
 b=0.03       #épaisseur
 Long=0.595      #Longuer

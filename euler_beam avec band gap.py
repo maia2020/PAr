@@ -3,9 +3,10 @@ import matplotlib.pyplot as plt
 
 
 # caractéristiques de la poutre
-
-E=69e9      #Module de Young
-E=(1+0.01j)*69e9      #Module de Young
+#eta_w=0.0003*217*1j
+eta_w=0.00001j
+E=(1+eta_w)*69e9
+#E=69e9      #Module de Young
 rho=2710     #masse volumique
 b=0.03       #épaisseur
 Long=0.595      #Longuer
@@ -39,10 +40,13 @@ k_HSLDS=(w2**2)*m2
 
 
 
-N_cell = 2  #Numero cells
+N_cell = 6  #Numero cells
+N=int(N_cell/2)
 freq = np.logspace(1,3,10000) #frequency
 frf=[]
 frf_tmd=[]
+auto_va_list_2=[]
+auto_va_list_3=[]
 Vr=1
 l=Long/N_cell
 for f in freq:
@@ -73,7 +77,9 @@ for f in freq:
     T_p = T[0] @ T[0]
     
     T_tmd=T[0] @ F @ T[0]   
-    #T = np.linalg.matrix_power(T, N_cell)
+    
+    T_tmd = np.linalg.matrix_power(T_tmd, N)
+    T_p = np.linalg.matrix_power(T_p, N)
     
     #T=np.dot(T[2],T[1],T[0])
     Vl = Vr/(T_p[2,2] - (T_p[2,3]*T_p[3,2]/T_p[3,3]))        
@@ -84,17 +90,34 @@ for f in freq:
     Ml_tmd = -T_tmd[3,2]*Vl_tmd/(T_tmd[3,3])
     Yr_tmd = (T_tmd[0,2]*Vl_tmd)  +  (T_tmd[0,3]*Ml_tmd)
     
-    
-    
+    auto_va, auto_vetores=np.linalg.eig(T_tmd)
+
     
     #Yr= -((T[0,2]*T[2,3])/(T[3,2]-(T[2,2]*(T[3,3]/T[2,3]))))  + ((T[0,3]*T[2,2])/((T[2,3]*T[3,2])-(T[2,2]*T[3,3]))) 
     
     frf.append(abs(Yr))
     frf_tmd.append(abs(Yr_tmd))
     
+    mu = 1j*np.log(auto_va)/Long
+    
+    auto_va_list_2.append(mu)
+    #auto_va_list_3.append(auto_va[3])
+    
 
 plt.loglog(freq,frf)
 plt.loglog(freq,frf_tmd)
+plt.title('Frequency Response Function (FRF) of Euler-Bernoulli Beam')
+plt.xlabel('Frequency (rad/s)')
+plt.ylabel('FRF Amplitude')
+plt.grid(True)
+plt.show()
+
+print(auto_va_list_2)
+
+
+
+plt.plot(freq,auto_va_list_2,".")
+#plt.plot(freq,auto_va_list_3)
 plt.title('Frequency Response Function (FRF) of Euler-Bernoulli Beam')
 plt.xlabel('Frequency (rad/s)')
 plt.ylabel('FRF Amplitude')
