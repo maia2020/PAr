@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
 # caractéristiques de la poutre
 #eta_w=0.0003*217*1j
 eta_w=0.00001j
