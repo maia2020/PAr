@@ -29,8 +29,6 @@ N=int(N_cell/2)
 freq = np.logspace(1,3,10000) #frequency
 frf=[]
 frf_tmd=[]
-auto_va_list_0=[]
-auto_va_list_1=[]
 auto_va_list_2=[]
 auto_va_list_3=[]
 auto_va_list_2_im_1=[]
@@ -93,27 +91,15 @@ for f in freq:
     
     frf.append(abs(Yr))
     f=np.log(frf)
-    f_norm=f/max(abs(f))
     mu = 1j*np.log(auto_va)/Long
     mu.sort()
-    auto_va_list_0.append(mu[0].real)
-    auto_va_list_1.append(mu[1].real)
     auto_va_list_2.append(mu[2].real)
     auto_va_list_3.append(mu[3].real)
     auto_va_list_2_im_1.append(mu[2].imag)
     auto_va_list_3_im_2.append(mu[3].imag)
     
-arquivo = 'frfsecaovariada.txt'
-dados = np.genfromtxt(arquivo, skip_header=1)
 
-# Separar os dados em colunas
-freqconsol = dados[:, 0]
-log_abs_v = dados[:, 1]/max(abs(dados[:, 1]))
-
-
-# Plotar o gráfico
-plt.plot(freqconsol, log_abs_v, label='Log10(abs(v))')
-plt.plot(freq,f_norm,label='Sans absorbeur')
+plt.plot(freq,f,label='Sans absorbeur')
 plt.title('Frequency Response Function (FRF) of Euler-Bernoulli Beam')
 plt.xlabel('Frequency (rad/s)')
 plt.ylabel('FRF Amplitude')
@@ -124,8 +110,7 @@ plt.show()
 #print(auto_va_list_2)
 
 
-plt.plot(freq,auto_va_list_0,".")
-plt.plot(freq,auto_va_list_1,".")
+
 plt.plot(freq,auto_va_list_2,".")
 plt.plot(freq,auto_va_list_3,".")
 plt.title('Auto-valeurs de la matrice de transfert')
@@ -142,3 +127,18 @@ plt.ylabel('Constant de propagation')
 plt.grid(True)
 plt.show() 
 
+arquivo = 'caminho/do/seu/arquivo.txt'
+dados = np.genfromtxt(arquivo, skip_header=1)
+
+# Separar os dados em colunas
+freq = dados[:, 0]
+log_abs_v = dados[:, 1]
+
+# Plotar o gráfico
+plt.plot(freq, log_abs_v, label='Log10(abs(v))')
+plt.title('Gráfico Logarítmico')
+plt.xlabel('Frequência (Hz)')
+plt.ylabel('log10(abs(v))')
+plt.grid(True)
+plt.legend()
+plt.show()

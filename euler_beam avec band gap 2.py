@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # caractéristiques de la poutre
 #eta_w=0.0003*217*1j
-eta_w=0.00001j
+eta_w=0.001j
 E=(1+eta_w)*69e9
 #E=69e9      #Module de Young
 rho=2710     #masse volumique
@@ -41,13 +41,15 @@ k_HSLDS=(w2**2)*m2
 
 
 
-N_cell = 2  #Numero cells
+N_cell = 10  #Numero cells
 N=int(N_cell/2)
 freq = np.logspace(1,3,10000) #frequency
 frf=[]
 frf_tmd=[]
 auto_va_list_2=[]
 auto_va_list_3=[]
+auto_va_list_im_1=[]
+auto_va_list_im_2=[]
 Vr=1
 l=Long/N_cell
 for f in freq:
@@ -100,9 +102,11 @@ for f in freq:
     frf_tmd.append(abs(Yr_tmd))
     
     mu = 1j*np.log(auto_va)/Long
-    
-    auto_va_list_2.append(mu)
-    #auto_va_list_3.append(auto_va[3])
+    mu.sort()
+    auto_va_list_2.append(mu[2])
+    auto_va_list_3.append(mu[3])
+    auto_va_list_im_1.append(mu[2].imag)
+    auto_va_list_im_2.append(mu[3].imag)
     
 
 plt.loglog(freq,frf,label='Sans absorbeur')
@@ -114,11 +118,21 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-
+#print(auto_va_list_2)
 
 
 
 plt.plot(freq,auto_va_list_2,".")
+plt.plot(freq,auto_va_list_3,".")
+#plt.plot(freq,auto_va_list_3)
+#plt.title('Auto-valeurs de la matrice de transfert')
+plt.xlabel('Frequency (rad/s)')
+plt.ylabel('Constant de propagation')
+plt.grid(True)
+plt.show()
+
+plt.plot(freq,auto_va_list_im_1,".")
+plt.plot(freq,auto_va_list_im_2,".")
 #plt.plot(freq,auto_va_list_3)
 #plt.title('Auto-valeurs de la matrice de transfert')
 plt.xlabel('Frequency (rad/s)')
