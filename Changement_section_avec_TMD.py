@@ -11,7 +11,7 @@ E=(1+eta_w)*69e9
 rho=2710     #masse volumique
 b=0.03       #épaisseur
 b2=b*2
-Long=0.595     #Longuer
+Long=0.595      #Longuer
 h=0.015      #hauteur
 h2=h*2      
 I=(b*h**3)/12 #Moment d'inertie
@@ -22,6 +22,20 @@ A=h*b        #aire section
 A2=b2*h2
 m1=Long*b*h*rho #Masse
 ####
+
+k_HSLDS=1.1423e+04  #Raideur de l'absorbeur TMD (résultat des différents choix de dimensionnement)
+freq=18         
+ksi1=0.01        
+w1=2*np.pi*freq 
+k1=(w1**2)*m1 
+c1=2*ksi1*w1*m1
+mu=0.05
+ksi2op=np.sqrt(3*mu/8/(1+mu))+0.1616*ksi1/(1+mu)
+qop=1/(1+mu)*(1-1.5906*ksi1*np.sqrt(mu/(1+mu)))
+w2=qop*w1
+m2=mu*m1
+c2=2*ksi2op*w2*m2
+k_HSLDS=(w2**2)*m2
 
 
 N_cell = 2  #Numero cells
@@ -56,9 +70,9 @@ for f in freq:
 
     T.append(0.5*np.array([[Tii,T12,T13,T14],[T21,Tii,-T14,T24],[T31,T32,Tii,-T21],[-T32,T42,-T12,Tii]]))
     
-    #kcoef=1/(1/(k_HSLDS+c2*1j*2*np.pi*f)-1/(4*np.pi**2*f**2*m2))
+    kcoef=1/(1/(k_HSLDS+c2*1j*2*np.pi*f)-1/(4*np.pi**2*f**2*m2))
     
-    #F=np.array([[1,0,0,0],[0,1,0,0],[-kcoef,0,1,0],[0,0,0,1]])
+    F=np.array([[1,0,0,0],[0,1,0,0],[-kcoef,0,1,0],[0,0,0,1]])
     
     kap2=(( (rho*A2) / (EI2) ) * s**2)**(1/4)
     Tii_2=np.cos(l*kap2)+np.cosh(l*kap2)
@@ -77,7 +91,9 @@ for f in freq:
     
     T_p = T2[-1] @ T[-1]
     
+    T_tmd=T2[-1] @ F @ T[-1]
     
+    T_tmd = np.linalg.matrix_power(T_tmd, N)
     T_p = np.linalg.matrix_power(T_p, N)
     
     
@@ -85,11 +101,15 @@ for f in freq:
     Ml = -T_p[3,2]*Vl/(T_p[3,3])
     Yr = (T_p[0,2]*Vl)  +  (T_p[0,3]*Ml)
     
+    Vl_tmd = Vr/(T_tmd[2,2] - (T_tmd[2,3]*T_tmd[3,2]/T_tmd[3,3]))        
+    Ml_tmd = -T_tmd[3,2]*Vl_tmd/(T_tmd[3,3])
+    Yr_tmd = (T_tmd[0,2]*Vl_tmd)  +  (T_tmd[0,3]*Ml_tmd)
 
-    auto_va, auto_vetores=np.linalg.eig(T_p)
+    auto_va, auto_vetores=np.linalg.eig(T_tmd)
 
     
     frf.append(abs(Yr))
+    frf_tmd.append(abs(Yr_tmd))
     
     mu = 1j*np.log(auto_va)/Long
     mu.sort()
@@ -100,6 +120,7 @@ for f in freq:
     
 
 plt.loglog(freq,frf,label='Sans absorbeur')
+plt.loglog(freq,frf_tmd,label='Avec absorbeur')
 plt.title('Frequency Response Function (FRF) of Euler-Bernoulli Beam')
 plt.xlabel('Frequency (rad/s)')
 plt.ylabel('FRF Amplitude')
@@ -126,18 +147,3 @@ plt.xlabel('Frequency (rad/s)')
 plt.ylabel('Constant de propagation')
 plt.grid(True)
 plt.show()
-
-
-freq_list = freq
-auto_valeur_list = auto_va_list_3
-
-# Abrir o arquivo para escrever
-with open('output.txt', 'w') as file:
-    # Escrever o cabeçalho
-    file.write("freq\tauto_valeur\n")
-
-    # Escrever os dados
-    for freq, auto_valeur in zip(freq_list, auto_valeur_list):
-        file.write(f"{freq}\t{auto_valeur}\n")
-
-print("Dados salvos com sucesso em 'output.txt'.")
