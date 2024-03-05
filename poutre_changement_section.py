@@ -92,11 +92,9 @@ for f in freq:
     frf.append(abs(Yr))
     
     mu = 1j*np.log(auto_va)/Long
-    mu.sort()
-    auto_va_list_2.append(mu[2].real)
-    auto_va_list_3.append(mu[3].real)
-    auto_va_list_2_im_1.append(mu[2].imag)
-    auto_va_list_3_im_2.append(mu[3].imag)
+    
+    auto_va_list_2.append(mu)
+    
     
 
 plt.loglog(freq,frf,label='Sans absorbeur')
@@ -107,25 +105,16 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
-#print(auto_va_list_2)
 
 
 
 plt.plot(freq,auto_va_list_2,".")
-plt.plot(freq,auto_va_list_3,".")
-plt.title('Auto-valeurs de la matrice de transfert')
 plt.xlabel('Frequency (rad/s)')
 plt.ylabel('Constant de propagation')
 plt.grid(True)
 plt.show()
 
-plt.plot(freq,auto_va_list_2_im_1,".")
-plt.plot(freq,auto_va_list_3_im_2,".")
-plt.title('Auto-valeurs de la matrice de transfert')
-plt.xlabel('Frequency (rad/s)')
-plt.ylabel('Constant de propagation')
-plt.grid(True)
-plt.show()
+
 
 
 freq_list = freq
