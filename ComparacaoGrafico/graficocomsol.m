@@ -13,6 +13,7 @@ filteredData = data(data.Frequence <= 1000, :);
 figure;
 plot(filteredData.Frequence, filteredData.Value, 'o');
 title('Gráfico de Frequência vs. Valor (Filtrado)');
+legend(["Comsol"])
 xlabel('Frequência');
 ylabel('Valor');
 grid on;

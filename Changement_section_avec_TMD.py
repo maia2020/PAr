@@ -38,7 +38,7 @@ c2=2*ksi2op*w2*m2
 k_HSLDS=(w2**2)*m2
 
 
-N_cell = 2  #Numero cells
+N_cell = 6  #Numero cells
 N=int(N_cell/2)
 freq = np.logspace(1,3,10000) #frequency
 frf=[]
