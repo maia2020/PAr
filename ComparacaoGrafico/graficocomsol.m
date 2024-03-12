@@ -12,11 +12,11 @@ filteredData = data(data.Frequence <= 1000, :);
 % Gerar gráfico com os dados filtrados
 figure;
 plot(filteredData.Frequence, filteredData.Value, 'o');
-title('Gráfico de Frequência vs. Valor (Filtrado)');
-legend(["Comsol"])
-xlabel('Frequência');
-ylabel('Valor');
+title('Comparaison constant de propagation Comsol et TMM');
+xlabel('Freq (Hz)');
+ylabel('Constant de propagation');
 grid on;
 hold on;
 plot(frequency2,value2, 'x');
-
+legend("Comsol","Méthode matrice de transfert")
+set(gca,"fontsize",20)

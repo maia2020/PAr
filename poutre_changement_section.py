@@ -1,3 +1,6 @@
+#Comment: crtl + ;
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -117,16 +120,16 @@ plt.show()
 
 
 
-freq_list = freq
-auto_valeur_list = auto_va_list_3
+# freq_list = freq
+# auto_valeur_list = auto_va_list_3
 
-# Abrir o arquivo para escrever
-with open('output.txt', 'w') as file:
-    # Escrever o cabeçalho
-    file.write("freq\tauto_valeur\n")
+# # Abrir o arquivo para escrever
+# with open('output.txt', 'w') as file:
+#     # Escrever o cabeçalho
+#     file.write("freq\tauto_valeur\n")
 
-    # Escrever os dados
-    for freq, auto_valeur in zip(freq_list, auto_valeur_list):
-        file.write(f"{freq}\t{auto_valeur}\n")
+#     # Escrever os dados
+#     for freq, auto_valeur in zip(freq_list, auto_valeur_list):
+#         file.write(f"{freq}\t{auto_valeur}\n")
 
-print("Dados salvos com sucesso em 'output.txt'.")
+# print("Dados salvos com sucesso em 'output.txt'.")
