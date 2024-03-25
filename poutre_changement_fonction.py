@@ -92,53 +92,63 @@ for f in freq:
     frf.append(abs(Yr))
     f=np.log(frf)
     mu = 1j*np.log(auto_va)/Long
-    mu.sort()
-    auto_va_list_2.append(mu[2].real)
-    auto_va_list_3.append(mu[3].real)
-    auto_va_list_2_im_1.append(mu[2].imag)
-    auto_va_list_3_im_2.append(mu[3].imag)
+    mu_r = mu.real
+    mu_i = mu.imag
+    mu_r.sort()
+    mu_i.sort()
+    auto_va_list_2.append(mu_r[0])
+    auto_va_list_3.append(mu_r[3])
+    auto_va_list_2_im_1.append(mu_i[2])
+    auto_va_list_3_im_2.append(mu_i[0])
     
 
-plt.plot(freq,f,label='Sans absorbeur')
-plt.title('Frequency Response Function (FRF) of Euler-Bernoulli Beam')
-plt.xlabel('Frequency (rad/s)')
-plt.ylabel('FRF Amplitude')
-plt.legend()
-plt.grid(True)
-plt.show()
+# plt.plot(freq,f,label='Sans absorbeur')
+# plt.title('Frequency Response Function (FRF) of Euler-Bernoulli Beam')
+# plt.xlabel('Frequency (rad/s)')
+# plt.ylabel('FRF Amplitude')
+# plt.legend()
+# plt.grid(True)
+# plt.show()
 
-#print(auto_va_list_2)
+# #print(auto_va_list_2)
 
 
 
-plt.plot(freq,auto_va_list_2,".")
-plt.plot(freq,auto_va_list_3,".")
-plt.title('Auto-valeurs de la matrice de transfert')
-plt.xlabel('Frequency (rad/s)')
-plt.ylabel('Constant de propagation')
-plt.grid(True)
-plt.show()
+# plt.plot(freq,auto_va_list_2,".")
+# plt.plot(freq,auto_va_list_3,".")
+# plt.title('Auto-valeurs de la matrice de transfert')
+# plt.xlabel('Frequency (rad/s)')
+# plt.ylabel('Constant de propagation')
+# plt.grid(True)
+# plt.show()
 
-plt.plot(freq,auto_va_list_2_im_1,".")
-plt.plot(freq,auto_va_list_3_im_2,".")
-plt.title('Auto-valeurs de la matrice de transfert')
-plt.xlabel('Frequency (rad/s)')
-plt.ylabel('Constant de propagation')
-plt.grid(True)
-plt.show() 
+# plt.plot(freq,auto_va_list_2_im_1,".")
+# plt.plot(freq,auto_va_list_3_im_2,".")
+# plt.title('Auto-valeurs de la matrice de transfert')
+# plt.xlabel('Frequency (rad/s)')
+# plt.ylabel('Constant de propagation')
+# plt.grid(True)
+# plt.show() 
 
-arquivo = 'caminho/do/seu/arquivo.txt'
-dados = np.genfromtxt(arquivo, skip_header=1)
+# Plot the first set of data
+fig, ax1 = plt.subplots()
+ax1.plot(freq,auto_va_list_3,".",label='Real') 
+ax1.set_xlabel('Frequency(Hz)')
+ax1.set_ylabel('Real', color='b')
+ax1.tick_params('y', colors='b')
 
-# Separar os dados em colunas
-freq = dados[:, 0]
-log_abs_v = dados[:, 1]
+# Create a second y-axis sharing the same x-axis
+ax2 = ax1.twinx()
+ax2.plot(freq,auto_va_list_2_im_1,".",label='Imag', color='r')
+ax2.set_ylabel('Imag', color='r')
+ax2.tick_params('y', colors='r')
 
-# Plotar o gráfico
-plt.plot(freq, log_abs_v, label='Log10(abs(v))')
-plt.title('Gráfico Logarítmico')
-plt.xlabel('Frequência (Hz)')
-plt.ylabel('log10(abs(v))')
-plt.grid(True)
-plt.legend()
+y_min = min(ax1.get_ylim()[0], ax2.get_ylim()[0])
+y_max = max(ax1.get_ylim()[1], ax2.get_ylim()[1])
+ax1.set_ylim(y_min, y_max)
+ax2.set_ylim(y_min, y_max)
+# Display the plot
+
+plt.title(' Constante de propagation')
+plt.grid(True,axis="both")
 plt.show()

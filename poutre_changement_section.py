@@ -96,7 +96,8 @@ for f in freq:
     
     mu = 1j*np.log(auto_va)/Long
     
-    auto_va_list_2.append(mu)
+    auto_va_list_2.append(abs(mu.real))
+    auto_va_list_2_im_1.append(-abs(mu.imag))
     
     
 
@@ -112,6 +113,7 @@ plt.show()
 
 
 plt.plot(freq,auto_va_list_2,".")
+plt.plot(freq,auto_va_list_2_im_1,".")
 plt.xlabel('Frequency (rad/s)')
 plt.ylabel('Constant de propagation')
 plt.grid(True)
